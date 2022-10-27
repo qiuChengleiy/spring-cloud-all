@@ -40,3 +40,8 @@ mybatis-plus:
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+security:
+  oauth2:
+    client:
+      client-id: clientId1
+      client-secret: $2a$10$WFDhpNunaH0aPlPQp33q8OAlqot6NANran7HeP/DSSWt1kVRvF2d2

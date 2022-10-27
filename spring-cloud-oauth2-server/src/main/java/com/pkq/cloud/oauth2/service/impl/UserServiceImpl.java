@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,6 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     private SysUserService sysUserService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserInfo userInfo = sysUserService.getUserByUserName(userName);
@@ -47,7 +45,7 @@ public class UserServiceImpl implements UserDetailsService {
         permissions.forEach(permission->{
             authorities.add(new SimpleGrantedAuthority("ROLE_" + permission));
         });
-        UserDetails user = new User(userInfo.getUsername(), passwordEncoder.encode(userInfo.getPassword()), authorities);
+        UserDetails user = new User(userInfo.getUsername(), new BCryptPasswordEncoder().encode(userInfo.getPassword()), authorities);
         log.warn(user.toString());
         return user;
     }
